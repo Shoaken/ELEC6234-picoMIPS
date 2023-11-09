@@ -1,0 +1,27 @@
+// sample picoMIPS program 2 
+// n = 8 bits, Isize = 8+n = 16 bits
+// format: 4b opcode, 4b %d, 8b %s or immediate or address
+// 
+// HEX /////////// BINARY  ///////////////////// ASSEMBLER /////////
+
+7080     // 16'b0111_0000_10000000    //   BAT1 %-, 1;    	until Bstus=0 goto next Instruction
+7000‬     // 16'b0111_0000_00000000    //   BAT0 %-, 0;    	until Bstus=1 goto next Instruction[REPEAT HERE]
+6000‬     // 16'b0110_0000_00000000    //   LDS  %0, -;    	REG 1 <= inport x1
+6100‬     // 16'b0110_0001_00000000    //   LDS  %1, -;   	REG 2 <= inport x1
+7080‬     // 16'b0111_0000_10000000    //   BAT1 %-, 1;    	until Bstus=0 goto next Instruction
+7000‬     // 16'b0111_0000_00000000    //   BAT0 %-, 0;    	until Bstus=1 goto next Instruction
+6200‬     // 16'b0110_0010_00000000    //   LDS  %2, -;    	REG 3 <= inport y1
+6300‬     // 16'b0110_0011_00000000    //   LDS  %3, -;    	REG 4 <= inport y1
+7080‬     // 16'b0111_0000_10000000    //   BAT1 %-, 1;    	until Bstus=0 goto next Instruction
+5060‬     // 16'b0101_0000_01100000    //   MULI %0, 0.75; 	%1 = %1 * 0.75; // 0.75x1
+51C0‬     // 16'b0101_0001_11000000    //   MULI %1, -0.5; 	%2 = %2 * -0.5; // -0.5x1
+5240‬     // 16'b0101_0010_01000000    //   MULI %2, 0.5 ; 	%3 = %3 * 0.5;  // 0.5y1
+5360‬     // 16'b0101_0011_01100000    //   MULI %3, 0.75; 	%4 = %4 * 0.75; // 0.75y1
+0002     // 16'b0000_0000_00000010    //   ADD  %0, %2  ; 	%0 = %0 + %2;   // 0.75x1 + 0.5y1
+0103     // 16'b0000_0001_00000011    //   ADD  %1, %3  ; 	%1 = %1 + %3;   // -0.5x1 + 0.75y1
+1014‬     // 16'b0001_0000_00010100    //   ADDI %0, 20  ;  	%0 = %0 + 20;   // x2 = 0.75x1 + 0.5y1 + 20
+8000‬     // 16'b1000_0000_00000000    //   SHOW %0, -;      SHOW %0
+7000‬     // 16'b0111_0000_00000000    //   BAT0 %-, 0;      until Bstus=1 goto next Instruction
+11EC‬     // 16'b0001_0001_11101100    //   ADDI %1, -20;    %1 = %1 + -20;  // y2 = -0.5x1 + 0.75y1 - 20
+8100‬     // 16'b1000_0001_00000000    //   SHOW %1, -;      SHOW %1
+7082‬     // 16'b0111_0000_10000010    //   BAT1 %-, 2;      until Bstus=0 goto LINE3 Instruction
